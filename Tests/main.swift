@@ -317,6 +317,38 @@ do {
     try? fm.removeItem(at: main)
 }
 
+do {
+    // One profile folder is one login and one history. A second shortcut on
+    // it opens the same account under another name, which is how a new
+    // shortcut came up already signed in to somebody else's.
+    var holder = Shortcut(name: "Folder Holder", source: .own)
+    holder.installedName = holder.name
+    holder.name = "Renamed Holder"
+    var newcomer = Shortcut(name: "Newcomer", source: .own)
+    newcomer.folder = holder.folder
+    let list = [holder, newcomer]
+
+    var refusal: String?
+    do { _ = try Installer.install(newcomer, sourceDir: nil, among: list) }
+    catch { refusal = error.localizedDescription }
+    check(refusal?.contains("Renamed Holder") == true && refusal?.contains(holder.folder) == true,
+          "a new shortcut is refused a folder another shortcut uses, and told whose it is")
+    check(Installer.installedBundle(for: newcomer, among: list) == nil, "and no app is made for it")
+
+    var mover = Shortcut(name: "Mover", source: .own)
+    mover.installedName = mover.name
+    var moved = mover
+    moved.folder = holder.folder
+    var movedRefusal: String?
+    do { _ = try Installer.install(moved, sourceDir: nil, replacing: mover, among: [holder, mover]) }
+    catch { movedRefusal = error.localizedDescription }
+    check(movedRefusal != nil, "and so is an existing shortcut moved onto it")
+
+    let kept = try? Installer.install(holder, sourceDir: nil, replacing: holder, among: list)
+    check(kept != nil, "while the shortcut already on the folder can still be updated")
+    Installer.uninstall(holder)
+}
+
 // MARK: - Shortcut icons
 
 section("Shortcut icons")
@@ -765,6 +797,23 @@ do {
     check(store.uniqueName() == "Claude 2", "the first suggestion is Claude 2")
     store.shortcuts = [Shortcut(name: "Claude 2")]
     check(store.uniqueName() == "Claude 3", "the next one steps past it")
+
+    // A shortcut keeps its folder when it is renamed, so "Claude 2" renamed
+    // left Claude-2 behind a name nobody held. The next new shortcut was
+    // offered that name, took that folder, and opened already signed in to
+    // the renamed one's account; deleting it and adding another only offered
+    // the same name again.
+    var renamed = Shortcut(name: "Claude 2")
+    renamed.name = "Work"
+    store.shortcuts = [renamed]
+    check(store.uniqueName() == "Claude 3",
+          "a name whose folder a renamed shortcut kept is not offered to a new one")
+    let leftover = Graft.applicationSupport.appending(path: Shortcut.folderName(for: "Spare 2"))
+    try? fm.createDirectory(at: leftover, withIntermediateDirectories: true)
+    store.shortcuts = []
+    check(store.uniqueName(base: "Spare") == "Spare 3",
+          "nor one whose folder is still on disk, holding whoever was signed in there last")
+    try? fm.removeItem(at: leftover)
 
     // A shortcut may not inherit from itself, directly or through a chain.
     var a = Shortcut(name: "A")

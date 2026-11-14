@@ -320,10 +320,23 @@ final class ShortcutStore: ObservableObject {
     }
 
     /// Numbering starts at two, since the stock app is the first one.
+    ///
+    /// The folder decides it as much as the name. A shortcut keeps its folder
+    /// when it is renamed, so "Claude 2" renamed left Claude-2 behind a name
+    /// nobody held: the next new shortcut was offered that name, took that
+    /// folder, and opened already signed in to the renamed one's account, and
+    /// deleting it and adding another only offered the same name again. A
+    /// folder still on disk from a shortcut that is gone is passed over too,
+    /// since it holds whoever was signed in there last.
     func uniqueName(base: String = "Claude") -> String {
+        func taken(_ name: String) -> Bool {
+            let folder = Shortcut.folderName(for: name)
+            return shortcuts.contains { $0.name == name || Graft.isNamed($0.folder, folder) }
+                || Graft.exists(Graft.applicationSupport.appending(path: folder))
+        }
         var n = 2
         var candidate = "\(base) \(n)"
-        while shortcuts.contains(where: { $0.name == candidate }) {
+        while taken(candidate) {
             n += 1
             candidate = "\(base) \(n)"
         }

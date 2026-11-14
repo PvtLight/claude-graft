@@ -25,6 +25,20 @@ identical. The one place that still lets `Claude` through, the manual-update
 library for the main profile, asks the same way, so a profile reached through a
 lower-case path is not refused there.
 
+**One profile folder, one shortcut.** A new shortcut's folder comes from its
+name, and a shortcut keeps its folder when it is renamed, so "Claude 2" renamed
+left Claude-2 behind a name nobody held. The next new shortcut was offered
+"Claude 2", took Claude-2, and opened already signed in to the renamed one's
+account; deleting it and adding another only offered the same name again, and
+renaming an existing shortcut to make a new account kept that shortcut's login
+for the same reason. `uniqueName` now passes over a name whose folder another
+shortcut uses, or that is still on disk from a shortcut that is gone, since
+that folder holds whoever was signed in there last. `Installer.install` refuses
+a new shortcut, or one whose folder is changing, on a folder another shortcut
+uses, and says whose it is. A shortcut already on its folder stays updatable
+whatever an older list holds, so a pair left sharing one by an earlier version
+is untangled by moving one of them, not by refusing both.
+
 ## Opening, revealing and the shortcut bundle
 
 **Every route that opens a profile asks first.** Two Claudes on one chat store

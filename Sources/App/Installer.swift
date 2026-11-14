@@ -132,6 +132,7 @@ enum Installer {
         case reservedName(String)
         case nameTaken(String)
         case badFolder(String)
+        case folderInUse(holder: String, folder: String)
         case selfSource
         case missingIcon
         case iconCreationFailed
@@ -147,6 +148,9 @@ enum Installer {
                 return L10n.format("There is already an application at %@ that Claude Graft did not create. Rename this shortcut.", path)
             case .badFolder(let reason):
                 return reason
+            case .folderInUse(let holder, let folder):
+                return L10n.format("“%@” already uses the folder %@. Give this shortcut a folder of its own.",
+                                   holder, folder)
             case .selfSource:
                 return L10n.text("This shortcut is set to borrow chats from its own profile. Choose a different source.")
             case .missingIcon:
@@ -179,6 +183,23 @@ enum Installer {
 
         if let sourceDir, Graft.samePath(sourceDir, shortcut.profileDir) {
             throw InstallError.selfSource
+        }
+
+        // One profile folder is one login and one history, so a second
+        // shortcut on it opens the same account under another name — which is
+        // how a new shortcut came up already signed in to somebody else's.
+        // Refused only when this press would put it there: a new shortcut, or
+        // one whose folder is changing. One already on its folder stays
+        // updatable whatever else an older list holds.
+        let movesHere = shortcut.installedName == nil
+            || previous.map { !Graft.isNamed($0.folder, shortcut.folder) } == true
+        if movesHere, let holder = shortcuts.first(where: {
+            $0.id != shortcut.id && (Graft.isNamed($0.folder, shortcut.folder)
+                                     || Graft.samePath($0.profileDir, shortcut.profileDir))
+        }) {
+            throw InstallError.folderInUse(
+                holder: holder.name.trimmingCharacters(in: .whitespacesAndNewlines),
+                folder: shortcut.folder)
         }
 
         // Written under the name asked for, beside the app it replaces. That
