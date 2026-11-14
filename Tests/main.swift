@@ -1666,6 +1666,41 @@ do {
     check(readme.contains("href=\"\(home)\""),
           "the README sends people to the site's own address, not the one that redirects")
 
+    // "Claude Graft" alone is a search the much larger projects called Graft
+    // win, so this page is found by what it does, said the way people ask for
+    // it. Until then the one heading on the page was the slogan, which names
+    // neither the app nor anything a person would type.
+    func between(_ open: String, _ close: String, in text: String) -> String {
+        text.components(separatedBy: open).dropFirst().first?.components(separatedBy: close).first ?? ""
+    }
+    let heading = between("<h1", "</h1>", in: site)
+    let title = between("<title>", "</title>", in: site)
+    check(site.components(separatedBy: "<h1").count == 2,
+          "the home page has one main heading")
+    check(heading.contains("Claude Graft") && heading.contains("multiple Claude accounts"),
+          "and it names the app and says what it does")
+    check(title.hasPrefix("Claude Graft") && title.contains("multiple Claude accounts"),
+          "and so does the title a search result shows")
+
+    // Questions in the structured data that the page does not show are the
+    // kind a search engine learns to ignore, and two copies drift apart the
+    // first time one is edited without the other.
+    let flat = site.split(whereSeparator: \.isWhitespace).joined(separator: " ")
+    let graph = ((try? JSONSerialization.jsonObject(
+        with: Data(between("<script type=\"application/ld+json\">", "</script>", in: site).utf8)))
+        as? [String: Any])?["@graph"] as? [[String: Any]] ?? []
+    let answered: [(question: String, answer: String)] =
+        (graph.first { $0["@type"] as? String == "FAQPage" }?["mainEntity"] as? [[String: Any]] ?? [])
+        .compactMap { item in
+            guard let question = item["name"] as? String,
+                  let answer = (item["acceptedAnswer"] as? [String: Any])?["text"] as? String else { return nil }
+            return (question, answer)
+        }
+    check(!answered.isEmpty && answered.allSatisfy { flat.contains("<h3>\($0.question)</h3> <p>\($0.answer)</p>") },
+          "every question the structured data answers is on the page, answered word for word")
+    check(site.components(separatedBy: "<div class=\"qa").count - 1 == answered.count,
+          "and every question on the page is in the structured data")
+
     // The tip jar is a second account under a second spelling. GitHub Sponsors
     // cannot pay into an Indian account, so the money goes through Ko-fi, whose
     // handle carries no hyphens — neither name can be built out of the other,

@@ -227,6 +227,7 @@ any of these. The why is in [notes/updates-and-releases.md](notes/updates-and-re
 - **The site's address is `graft.aadityamore.com`,** in the canonical, the structured data, the README and the repository's homepage. The github.io address only redirects, and only the feed keeps it.
 - **A new page or address goes to Search Console the day it ships:** the sitemap submitted in the `aadityamore.com` Domain property, the page sent through URL Inspection, and the submission recorded in the note and in the portfolio's `docs/seo.md`.
 - **`release-notes/` stays out of the index;** they are fragments of the update dialog, not pages.
+- **The page is found by what it does:** the title and the one `<h1>` name Claude Graft and say "multiple Claude accounts", and every question in the `FAQPage` data is on the page word for word.
 
 ### Diagnostics and verification — [notes/diagnostics-and-verification.md](notes/diagnostics-and-verification.md)
 

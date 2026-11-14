@@ -3,14 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Claude Graft — multiple Claude accounts, side by side on Mac</title>
-<meta name="description" content="Run every Claude Desktop account side by side on macOS and share their usage, so Claude Code carries on when one runs out. Free and open source.">
+<title>Claude Graft — run multiple Claude accounts on one Mac</title>
+<meta name="description" content="Run multiple Claude Desktop accounts at once on one Mac. When one hits its usage limit, Claude Code carries on with another's. Free and open source.">
+<meta name="robots" content="max-image-preview:large">
 <link rel="canonical" href="https://graft.aadityamore.com/">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#faf8f5" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#12100d" media="(prefers-color-scheme: dark)">
-<meta property="og:title" content="Claude Graft">
-<meta property="og:description" content="1× is less but 5× is too much. Run every Claude account side by side on macOS, and let Claude Code carry on with another's usage when one runs out.">
+<meta property="og:title" content="Claude Graft — run multiple Claude accounts on one Mac">
+<meta property="og:description" content="1× is less but 5× is too much. Run multiple Claude accounts at once on one Mac, and let Claude Code carry on with another's usage when one hits its limit.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://graft.aadityamore.com/">
 <meta property="og:image" content="https://graft.aadityamore.com/images/00-shared-usage.png">
@@ -20,8 +21,8 @@
 <meta property="og:site_name" content="Claude Graft">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Claude Graft">
-<meta name="twitter:description" content="1× is less but 5× is too much. Run every Claude account side by side on macOS, and let Claude Code carry on with another's usage when one runs out.">
+<meta name="twitter:title" content="Claude Graft — run multiple Claude accounts on one Mac">
+<meta name="twitter:description" content="1× is less but 5× is too much. Run multiple Claude accounts at once on one Mac, and let Claude Code carry on with another's usage when one hits its limit.">
 <meta name="twitter:image" content="https://graft.aadityamore.com/images/00-shared-usage.png">
 <meta name="twitter:image:alt" content="Claude Graft's window, with a Claude drawing on Claude 2 and another account under Shared usage">
 <script type="application/ld+json">
@@ -40,11 +41,22 @@
       "@type": "SoftwareApplication",
       "@id": "https://graft.aadityamore.com/#app",
       "name": "Claude Graft",
-      "description": "Run every Claude Desktop account side by side on macOS and share their usage, so Claude Code carries on when one runs out.",
+      "description": "Run multiple Claude Desktop accounts at once on one Mac, and share their usage so Claude Code carries on when one hits its limit.",
       "url": "https://graft.aadityamore.com/",
       "image": "https://graft.aadityamore.com/images/00-shared-usage.png",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "macOS 13 or later",
+      "softwareRequirements": "Claude Desktop",
+      "featureList": [
+        "Run multiple Claude Desktop accounts at the same time, each signed in on a profile of its own",
+        "Share usage, so Claude Code carries on with another account when one hits its limit",
+        "Every account's five-hour and weekly usage in the menu bar",
+        "Artifacts, projects and chats from every account in one place"
+      ],
+      "screenshot": [
+        "https://graft.aadityamore.com/images/00-shared-usage.png",
+        "https://graft.aadityamore.com/images/03-dropdown.png"
+      ],
       "downloadUrl": "https://github.com/aaditya-v-more/claude-graft/releases/latest",
       "license": "https://opensource.org/licenses/MIT",
       "isAccessibleForFree": true,
@@ -56,6 +68,53 @@
         "name": "Aaditya More",
         "url": "https://aadityamore.com/"
       }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://graft.aadityamore.com/#questions",
+      "url": "https://graft.aadityamore.com/",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can I use two Claude accounts at the same time on one Mac?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes, and more than two. Choose New Shortcut in Graft, open the Claude it makes and sign in there once with your other account. Each Claude has a profile of its own, so they all run at once, each with its own sign-in, Dock icon and colour, and nobody signs out to switch." }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens when Claude Code hits its usage limit?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Add your other accounts under Shared usage. When the account answering is nearly out of its five hours or its week, Claude Code carries on with one that has room, in the same Claude and the same conversation. You can also pick the account yourself from the menu bar. Sharing needs macOS 15." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it share usage for chats too, or only Claude Code?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Only Claude Code inside Claude Desktop. The Chat tab is never shared, and your chats, files, artifacts and connectors stay with each Claude's own account. Only the model's answers come from the other one." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this the same as duplicating Claude.app?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No copy is made. Every shortcut opens the Claude Desktop you already have on a profile of its own, so every account stays on the current version and one update reaches them all. Each shortcut carries its own launcher and opens whether or not Graft is running." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Claude Graft free?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes, and open source under the MIT licence. There is no account to make and nothing measured or sent anywhere. If it saves you the trouble, there's a tip jar." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my Claude login safe with it?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Graft borrows rather than copies. It reads only each Claude's access token, writes nothing back and sends it to api.anthropic.com alone. It never touches an app it didn't make, and removing it puts each Claude's Code settings back as they were." }
+        },
+        {
+          "@type": "Question",
+          "name": "What does it need?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A Mac on macOS 13 or later, Apple Silicon or Intel, and Claude Desktop. Sharing usage needs macOS 15. Install it with Homebrew or from the disk image, and it keeps itself up to date." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Claude Graft made by Anthropic?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. It's an independent project, not affiliated with Anthropic. It works alongside Claude Desktop, with the accounts you already have." }
+        }
+      ]
     }
   ]
 }
@@ -136,7 +195,7 @@ svg.i { width: 1em; height: 1em; flex: none; fill: none; stroke: currentColor; s
 
 /* ---------- headings ---------- */
 h1, h2, h3 { color: var(--ink); font-family: var(--sans); }
-h1 em, h2 em {
+.display em, h2 em {
   font-family: var(--serif);
   font-style: italic;
   font-weight: 500;
@@ -284,7 +343,21 @@ p:last-child { margin-bottom: 0; }
 }
 .pill .txt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pill svg.i { color: var(--ink-faint); }
+/* The heading names the app and what it does in the words people search with;
+   the slogan under it is the display line, so neither has to do the other's job. */
 .hero h1 {
+  font-size: clamp(1.02rem, 1.7vw, 1.2rem);
+  line-height: 1.4;
+  letter-spacing: -.01em;
+  font-weight: 520;
+  color: var(--ink-soft);
+  margin: 0 0 1.15rem;
+  max-width: 42rem;
+  text-wrap: balance;
+}
+.hero h1 b { color: var(--ink); font-weight: 680; }
+.hero .display {
+  color: var(--ink);
   font-size: clamp(2.75rem, 7.6vw, 5.9rem);
   line-height: .98;
   letter-spacing: -.05em;
@@ -293,7 +366,7 @@ p:last-child { margin-bottom: 0; }
   max-width: 15ch;
   text-wrap: balance;
 }
-.hero h1 em {
+.hero .display em {
   background: linear-gradient(100deg, var(--accent) 5%, var(--accent-2) 45%, var(--accent-3) 95%);
   -webkit-background-clip: text; background-clip: text;
   color: transparent;
@@ -638,6 +711,12 @@ section.sec { padding: clamp(4.5rem, 10vw, 8rem) 0; position: relative; }
 .card p { color: var(--ink-soft); font-size: .94rem; line-height: 1.55; }
 code.inline { font: .86em/1.4 var(--mono); background: var(--bg-deep); border: 1px solid var(--line); border-radius: 6px; padding: .08em .38em; }
 
+/* questions */
+.faq { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(1.5rem, 4vw, 3rem); }
+.qa { padding: 1.4rem 0 1.5rem; border-top: 1px solid var(--line); }
+.qa h3 { font-size: 1.08rem; margin-bottom: .55rem; }
+.qa p { color: var(--ink-soft); font-size: .97rem; line-height: 1.6; max-width: 34rem; }
+
 /* install */
 .install {
   position: relative; overflow: hidden; text-align: center;
@@ -721,7 +800,7 @@ html.js .reveal.in { opacity: 1; transform: none; }
 }
 @media (max-width: 640px) {
   body { font-size: 16px; }
-  .facts, .cards { grid-template-columns: minmax(0, 1fr); }
+  .facts, .cards, .faq { grid-template-columns: minmax(0, 1fr); }
   .cta { flex-direction: column; align-items: stretch; width: 100%; }
   .cta .btn, .cta .cmd { width: 100%; max-width: none; }
   .seg button { padding: .65rem .7rem; font-size: .85rem; }
@@ -788,11 +867,13 @@ html.js .reveal.in { opacity: 1; transform: none; }
 <section class="hero" id="top">
   <div class="wrap hero-copy">
     <a class="pill" href="#shared"><span class="tag">New in 2.0</span><span class="txt">Claude Code carries on when an account runs out</span><svg class="i"><use href="#i-arrow"/></svg></a>
-    <h1>1× is less but 5× is <em>too&nbsp;much.</em></h1>
+    <h1><b>Claude Graft:</b> run multiple Claude accounts on one Mac, at&nbsp;once</h1>
+    <p class="display">1× is less but 5× is <em>too&nbsp;much.</em></p>
     <p class="aside">Or 20× is less, lol.</p>
     <p class="lead">One Claude login is never quite the right amount. <strong>Claude Graft</strong> runs
-    every Claude account you have side by side, each signed in on its own, and lets them share their
-    usage, so when one runs out, Claude Code carries on with another's.</p>
+    all your Claude accounts at the same time, each in its own Claude Desktop and signed in on its own,
+    so switching never means signing out. And they share their usage: when one hits its limit, Claude
+    Code carries on with another's.</p>
     <div class="cta">
       <a class="btn btn-primary" data-dmg href="https://github.com/aaditya-v-more/claude-graft/releases/download/v2.0.1/ClaudeGraft-2.0.1.dmg">
         <svg class="i"><use href="#i-download"/></svg> Download for Mac
@@ -832,9 +913,9 @@ html.js .reveal.in { opacity: 1; transform: none; }
         </div>
       </div>
       <picture class="win">
-        <img src="shots/claude-dark.webp" width="1640" height="1120" alt="" fetchpriority="high">
+        <img src="shots/claude-dark.webp" width="1640" height="1120" alt="Claude Graft's window, with a Claude drawing on Claude 2 and another account under Shared usage" fetchpriority="high">
       </picture>
-      <div class="pop" data-pop><img src="shots/dropdown.webp" width="692" height="1242" alt=""></div>
+      <div class="pop" data-pop><img src="shots/dropdown.webp" width="692" height="1242" alt="Claude Graft's menu bar dropdown, with each account's five-hour and weekly usage"></div>
       <div class="mini-dock" aria-hidden="true">
         <span class="on"><img src="assets/presets/original.webp" alt=""></span>
         <span class="on"><img src="assets/presets/blue.webp" alt=""></span>
@@ -849,10 +930,10 @@ html.js .reveal.in { opacity: 1; transform: none; }
   <div class="wrap">
     <div class="head reveal">
       <p class="kicker">Shared usage</p>
-      <h2>When one account runs out, <em>another answers.</em></h2>
-      <p class="lead">Under Shared usage, add another of your Claudes or sign in to an account. Claude Code
-      carries on with that account's allowance without leaving the Claude you are in. Only the model's
-      answers come from the other account.</p>
+      <h2>When one account hits its limit, <em>another answers.</em></h2>
+      <p class="lead">Under Shared usage, add another of your Claudes or sign in to an account. As one
+      account nears its five-hour or weekly limit, Claude Code carries on with another's allowance,
+      without leaving the Claude you are in. Only the model's answers come from the other account.</p>
     </div>
 
     <div class="relay reveal" role="img" aria-label="Claude Code sends its request through Graft on your Mac. Graft passes it to Claude 2, which has room, rather than Claude, which has used its five hours.">
@@ -920,7 +1001,7 @@ html.js .reveal.in { opacity: 1; transform: none; }
 <section class="sec dark" id="menu-bar">
   <div class="wrap">
     <div class="head center reveal">
-      <p class="kicker">The menu bar</p>
+      <p class="kicker">Usage in the menu bar</p>
       <h2>Always know <em>who's answering.</em></h2>
       <p class="lead">Graft's item shows the Claude in front and its account's usage. While it shares,
       every account it draws on sits beside it, the one answering ringed in red, and the conversation on
@@ -992,12 +1073,13 @@ html.js .reveal.in { opacity: 1; transform: none; }
     <div class="copy-col reveal">
       <p class="kicker">Shortcuts</p>
       <h2>A Claude for <em>every account.</em></h2>
-      <p class="lead">New Shortcut makes a small app that opens Claude on a profile of its own. Sign in once
-      and it stays signed in. Launch it from Spotlight, keep it in the Dock, and tell it apart by a colour
-      no other Claude wears.</p>
+      <p class="lead">New Shortcut makes a small app that opens Claude Desktop on a profile of its own, so
+      every account runs at the same time, side by side. Sign in once and it stays signed in. Launch it
+      from Spotlight, keep it in the Dock, and tell it apart by a colour no other Claude wears.</p>
       <p>A new Claude starts with chats of its own. Reading another Claude's chats instead is a choice you
       make on its page, and then they are shared both ways.</p>
-      <p>Each one carries its own launcher, so it opens whether or not Graft is running.</p>
+      <p>Every shortcut opens the Claude Desktop you already have, so there is no second copy of Claude to
+      keep up to date, and each carries its own launcher, so it opens whether or not Graft is running.</p>
     </div>
     <div class="visual reveal">
       <div class="dock-scene">
@@ -1136,7 +1218,64 @@ html.js .reveal.in { opacity: 1; transform: none; }
   </div>
 </section>
 
-<section class="sec" id="install" style="padding-top:0">
+<section class="sec band" id="questions">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="kicker">Questions</p>
+      <h2>Good to know, <em>before you install.</em></h2>
+    </div>
+    <div class="faq">
+      <div class="qa reveal">
+        <h3>Can I use two Claude accounts at the same time on one Mac?</h3>
+        <p>Yes, and more than two. Choose New Shortcut in Graft, open the Claude it makes and sign in
+        there once with your other account. Each Claude has a profile of its own, so they all run at
+        once, each with its own sign-in, Dock icon and colour, and nobody signs out to switch.</p>
+      </div>
+      <div class="qa reveal">
+        <h3>What happens when Claude Code hits its usage limit?</h3>
+        <p>Add your other accounts under Shared usage. When the account answering is nearly out of its
+        five hours or its week, Claude Code carries on with one that has room, in the same Claude and the
+        same conversation. You can also pick the account yourself from the menu bar. Sharing needs
+        macOS 15.</p>
+      </div>
+      <div class="qa reveal">
+        <h3>Does it share usage for chats too, or only Claude Code?</h3>
+        <p>Only Claude Code inside Claude Desktop. The Chat tab is never shared, and your chats, files,
+        artifacts and connectors stay with each Claude's own account. Only the model's answers come from
+        the other one.</p>
+      </div>
+      <div class="qa reveal">
+        <h3>Is this the same as duplicating Claude.app?</h3>
+        <p>No copy is made. Every shortcut opens the Claude Desktop you already have on a profile of its
+        own, so every account stays on the current version and one update reaches them all. Each shortcut
+        carries its own launcher and opens whether or not Graft is running.</p>
+      </div>
+      <div class="qa reveal">
+        <h3>Is Claude Graft free?</h3>
+        <p>Yes, and open source under the MIT licence. There is no account to make and nothing measured or
+        sent anywhere. If it saves you the trouble, there's a tip jar.</p>
+      </div>
+      <div class="qa reveal">
+        <h3>Is my Claude login safe with it?</h3>
+        <p>Graft borrows rather than copies. It reads only each Claude's access token, writes nothing back
+        and sends it to api.anthropic.com alone. It never touches an app it didn't make, and removing it
+        puts each Claude's Code settings back as they were.</p>
+      </div>
+      <div class="qa reveal">
+        <h3>What does it need?</h3>
+        <p>A Mac on macOS 13 or later, Apple Silicon or Intel, and Claude Desktop. Sharing usage needs
+        macOS 15. Install it with Homebrew or from the disk image, and it keeps itself up to date.</p>
+      </div>
+      <div class="qa reveal">
+        <h3>Is Claude Graft made by Anthropic?</h3>
+        <p>No. It's an independent project, not affiliated with Anthropic. It works alongside Claude
+        Desktop, with the accounts you already have.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="install">
   <div class="wrap">
     <div class="install reveal">
       <p class="kicker">Install</p>

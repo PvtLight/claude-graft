@@ -41,6 +41,54 @@ instead of to the address the site names as its own.
   collides with the other Graft and the description is what a person searching
   without knowing the name types.
 
+## What people search for
+
+By 11 November 2026 Search Console had only ever shown the site for its own
+name — "claude graft", "graft claude", "graft for claude": 237 impressions and
+four clicks. Someone who needs the app does not know its name yet. What they
+type instead, from Google's suggestions and results pages on 15 November 2026,
+falls into two groups. One is about running more than one account: "multiple
+claude accounts mac", "claude desktop multiple accounts", "two claude accounts
+at the same time", "claude desktop multiple instances", "claude account
+switcher mac", "claude code multiple accounts", a personal and a work account
+on one Mac. The other is about running out: "claude code usage limit reached",
+"claude limit reached how to continue", the five-hour and weekly limits and
+when they reset, switching accounts in the middle of a session.
+
+Those results belong to Reddit threads, a feature request on the
+`anthropics/claude-code` repository asking for multiple accounts, a paid app
+whose guide is titled "How to Run Multiple Claude Accounts on One Mac", and
+personal blogs that copy `Claude.app` or set `CLAUDE_CONFIG_DIR`. Neither the
+site nor the repository was on the first two pages for any of them. For the
+bare name, the first page held a different Graft for Claude Code, a hook that
+trims tokens and has articles of its own, with the portfolio's project page
+fourth.
+
+What the page does about it:
+
+- The title and the one `<h1>` lead with the name and then say "run multiple
+  Claude accounts on one Mac", the phrase the paid app and the guides rank
+  with. The slogan stays as the display line under the heading; the suite
+  fails if the heading stops naming the app or the phrase.
+- The description and the Shared usage heading say "usage limit" and "hits its
+  limit", the words of the second group.
+- A questions section answers those searches in plain sentences: two accounts
+  at once, the usage limit, whether chats are shared too, whether it is a copy
+  of `Claude.app`, price, the login, what it needs, Anthropic. Its `FAQPage`
+  structured data repeats them word for word, and the suite holds the two
+  together. Google shows FAQ results only for a few authoritative sites now, so
+  the markup is for other engines; the visible answers are what match a long
+  question typed into any of them.
+- The repository's description is the GitHub page's title in Google
+  ("GitHub - aaditya-v-more/claude-graft: …"), so it now starts with the same
+  phrase, and its topics went to GitHub's limit of twenty with `claude-ai`,
+  `menubar-app`, `multiple-accounts` and `usage-limits`.
+
+None of this moves a generic search on its own. What does is other pages
+linking to the site by what it does: the feature request and the Reddit threads
+above, and the directories that list menu bar apps. Those are posts a person
+makes, not changes to this repository.
+
 ## Search Console
 
 The `aadityamore.com` Domain property covers the apex and every subdomain, Graft
