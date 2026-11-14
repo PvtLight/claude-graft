@@ -89,6 +89,17 @@ linking to the site by what it does: the feature request and the Reddit threads
 above, and the directories that list menu bar apps. Those are posts a person
 makes, not changes to this repository.
 
+Where things stood on Google on 15 November 2026, before the new wording was
+crawled, to measure it against:
+
+| Search | First page |
+| --- | --- |
+| claude graft | the portfolio's project page fourth; neither the site nor the repository |
+| claude graft mac | the project page, the repository, a listing site, then the site fourth under its old title |
+| multiple claude accounts mac | neither, on the first two pages |
+| claude desktop multiple accounts | neither |
+| claude code usage limit switch account | neither |
+
 ## Search Console
 
 The `aadityamore.com` Domain property covers the apex and every subdomain, Graft
@@ -100,6 +111,12 @@ it is published. Repeating the request does not speed anything up.
 Submitted on 11 November 2026: `https://graft.aadityamore.com/sitemap.xml`, and
 indexing requested for the home page. Record later submissions here and in the
 portfolio's `docs/seo.md`, so neither list can fall behind the other again.
+
+On 15 November 2026, once the new wording was live, URL Inspection reported the
+home page indexed ("URL is on Google"), and indexing was requested again so the
+new title, heading and questions are read; Google put it in its priority crawl
+queue. The portfolio's project page, retitled "Claude Graft - Multiple Claude
+Accounts on Mac" the same day, was indexed too and went into the same queue.
 
 ## The name
 
