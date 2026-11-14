@@ -39,6 +39,23 @@ uses, and says whose it is. A shortcut already on its folder stays updatable
 whatever an older list holds, so a pair left sharing one by an earlier version
 is untangled by moving one of them, not by refusing both.
 
+**The name chooses the folder until a folder is typed.** On a shortcut not yet
+created the folder follows the name, and only the folder field itself stops
+that. An `onChange` of the folder used to, and it also saw the folder the name
+had just chosen, so the folder followed the first keystroke and no other.
+Backspacing the 2 of "Claude 2" passes through an empty name, whose folder is
+Claude-Profile, and on a Mac with one the new shortcut stopped there: it showed
+that account's plan usage and offered its Start Session, and the page, looking
+its app up by the folder alone, took that shortcut's app for its own, so Open
+started the other account's Claude. The name's folder is now `suggestedFolder`,
+never one another shortcut has or one still on disk, numbered past them
+instead. The name never moves a created shortcut's folder; that is decided by
+`installedName`, which is in the list from the start, not by the app lookup,
+which arrives after the page opens. The page looks its app up with the whole
+list and its figures by shortcut, so one an earlier version left on another's
+folder reads as not created, shows no figures, offers Discard, says whose
+folder it is, and takes a folder of its own at the next key.
+
 ## Opening, revealing and the shortcut bundle
 
 **Every route that opens a profile asks first.** Two Claudes on one chat store

@@ -815,6 +815,65 @@ do {
           "nor one whose folder is still on disk, holding whoever was signed in there last")
     try? fm.removeItem(at: leftover)
 
+    // The folder a name gives a shortcut not created yet. Backspacing the 2
+    // of "Claude 2" passes through an empty name, whose folder is
+    // Claude-Profile, and a Mac with one has somebody signed in there: the
+    // new shortcut showed that account's figures and offered its Start Session.
+    var holder = Shortcut(name: "Holder", folder: "Claude-Profile", source: .own)
+    holder.installedName = holder.name
+    let draft = Shortcut(name: "Claude 2", source: .own)
+    store.shortcuts = [holder, draft]
+    check(store.suggestedFolder(for: "Tas", of: draft.id) == "Claude-Tas",
+          "a name whose folder is free gives that folder")
+    check(store.suggestedFolder(for: "Claude ", of: draft.id) == "Claude-Profile-2",
+          "an emptied name does not give a new shortcut another shortcut's folder")
+    check(store.suggestedFolder(for: "profile", of: draft.id) == "Claude-profile-2",
+          "nor does a name giving that folder in other letters")
+    let spareFolder = Graft.applicationSupport.appending(path: "Claude-Old")
+    let spareNext = Graft.applicationSupport.appending(path: "Claude-Old-2")
+    try? fm.createDirectory(at: spareFolder, withIntermediateDirectories: true)
+    check(store.suggestedFolder(for: "Old", of: draft.id) == "Claude-Old-2",
+          "nor a profile still on disk")
+    try? fm.createDirectory(at: spareNext, withIntermediateDirectories: true)
+    check(store.suggestedFolder(for: "Old", of: draft.id) == "Claude-Old-3",
+          "and the numbering steps past one on disk as well")
+    var placed = draft
+    placed.folder = "Claude-Tas"
+    store.shortcuts = [holder, placed]
+    check(store.suggestedFolder(for: "Tas", of: placed.id) == "Claude-Tas",
+          "a shortcut's own folder in the list is not taken from it")
+
+    // Left on another's folder, a shortcut not created yet was found by the
+    // folder alone and handed that one's app: it read as created, Open
+    // started the other account's Claude, and Delete asked about a profile
+    // that was not its own.
+    let stuck = Shortcut(name: "Tas", folder: holder.folder, source: .own)
+    store.shortcuts = [holder, stuck]
+    let holderApp = Installer.searchDirectories[0].appending(path: "Holder.app")
+    let holderResources = holderApp.appending(path: "Contents/Resources")
+    try? fm.createDirectory(at: holderResources, withIntermediateDirectories: true)
+    try? JSONEncoder().encode(GraftConfig(profileDir: holder.profileDir.path, sourceDir: nil))
+        .write(to: holderResources.appending(path: "graft.json"))
+    try? fm.createDirectory(at: holder.profileDir, withIntermediateDirectories: true)
+    check(ProfileOpener.bundle(for: stuck).map { Graft.samePath($0, holderApp) } == true,
+          "looked up without the list, a new shortcut on another's folder is handed that one's app")
+    check(ProfileOpener.bundle(for: stuck, among: store.shortcuts) == nil
+            && ProfileOpener.bundle(for: holder, among: store.shortcuts).map { Graft.samePath($0, holderApp) } == true,
+          "looked up with it, it is not, and the other keeps its own")
+    check(store.isDraft(stuck), "leaving it is Discard: what is in that folder is the other shortcut's")
+    let adopter = Shortcut(name: "Adopter", folder: "Claude-Old", source: .own)
+    store.shortcuts = [holder, adopter]
+    check(!store.isDraft(adopter), "while one adopting a profile no other shortcut has still asks before it goes")
+
+    let monitor = UsageMonitor()
+    monitor.setEntriesForTesting([UsageMonitor.Entry(name: holder.name, profile: holder.profileDir,
+                                                     usage: nil, isRunning: false, shortcut: holder.id)])
+    check(monitor.entry(for: stuck.profileDir)?.shortcut == holder.id,
+          "found by folder, its figures were the other account's")
+    check(monitor.entry(for: stuck) == nil && monitor.entry(for: holder)?.shortcut == holder.id,
+          "found by shortcut, it has none, and the other keeps its own")
+    for leftover in [holderApp, holder.profileDir, spareFolder, spareNext] { try? fm.removeItem(at: leftover) }
+
     // A shortcut may not inherit from itself, directly or through a chain.
     var a = Shortcut(name: "A")
     var b = Shortcut(name: "B")

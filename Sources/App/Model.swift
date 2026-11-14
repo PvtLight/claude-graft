@@ -233,12 +233,14 @@ final class ShortcutStore: ObservableObject {
         return problem
     }
 
-    /// Never created, and holding no data: safe to drop without asking. The
+    /// Never created, and holding no data: safe to drop without asking. A
+    /// folder another shortcut has holds that one's data, not this one's. The
     /// bundle is looked for last, since finding none means reading every app
     /// in Applications.
     func isDraft(_ shortcut: Shortcut) -> Bool {
         shortcut.installedName == nil
-            && !FileManager.default.fileExists(atPath: shortcut.profileDir.path)
+            && (!FileManager.default.fileExists(atPath: shortcut.profileDir.path)
+                || shortcuts.contains { $0.id != shortcut.id && Graft.isNamed($0.folder, shortcut.folder) })
             && Installer.installedBundle(for: shortcut, among: shortcuts) == nil
     }
 
@@ -330,9 +332,7 @@ final class ShortcutStore: ObservableObject {
     /// since it holds whoever was signed in there last.
     func uniqueName(base: String = "Claude") -> String {
         func taken(_ name: String) -> Bool {
-            let folder = Shortcut.folderName(for: name)
-            return shortcuts.contains { $0.name == name || Graft.isNamed($0.folder, folder) }
-                || Graft.exists(Graft.applicationSupport.appending(path: folder))
+            shortcuts.contains { $0.name == name } || !folderIsFree(Shortcut.folderName(for: name))
         }
         var n = 2
         var candidate = "\(base) \(n)"
@@ -341,5 +341,28 @@ final class ShortcutStore: ObservableObject {
             candidate = "\(base) \(n)"
         }
         return candidate
+    }
+
+    /// Whether a folder can go to a new shortcut without signing it in to
+    /// somebody: no other shortcut has it, and no profile is on disk there.
+    func folderIsFree(_ folder: String, for id: UUID? = nil) -> Bool {
+        !shortcuts.contains { $0.id != id && Graft.isNamed($0.folder, folder) }
+            && !Graft.exists(Graft.applicationSupport.appending(path: folder))
+    }
+
+    /// The folder a name gives a shortcut not yet created: `Shortcut.folderName`,
+    /// or, when that one is not free, the first free one numbered after it.
+    ///
+    /// An empty name gives Claude-Profile, and a Mac that already has one has
+    /// somebody signed in there. Backspacing "Claude 2" passes through an empty
+    /// name, so taking that folder by name put a new shortcut on the other
+    /// account: its figures, its Start Session, its app. Typing a folder by
+    /// hand still adopts it.
+    func suggestedFolder(for name: String, of id: UUID) -> String {
+        let base = Shortcut.folderName(for: name)
+        guard !folderIsFree(base, for: id) else { return base }
+        var n = 2
+        while !folderIsFree("\(base)-\(n)", for: id) { n += 1 }
+        return "\(base)-\(n)"
     }
 }
